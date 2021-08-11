@@ -2,8 +2,12 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const authRoute = require('./routes/auth');
+const userRoute = require('./routes/users');
 
 dotenv.config();
+app.use(express.json());
+
 const uri = process.env.MONGO_URL;
 
 mongoose
@@ -13,7 +17,10 @@ mongoose
     useCreateIndex: true
   })
   .then(console.log('Connected to MongoDB'))
-  .catch((err) => console.log('pasoooooooooooooooooooo'));
+  .catch((err) => console.log(err));
+
+app.use('/api/auth', authRoute);
+app.use('/api/users', userRoute);
 
 app.listen('5000', () => {
   console.log('Backend is running');
